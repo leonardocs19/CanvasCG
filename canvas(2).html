@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html>
+    <style>
+
+        canvas {
+            border: 1px dashed rgb(200, 200, 200);
+        }
+
+    </style>
+
+    <head>
+        <title>Canvas</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+
+    <body>
+
+
+        <div class="container">
+                <h1>Canvas <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon glyphicon-info-sign"></span> info</button></h1>
+
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h3 class="modal-title">Bem-Vindo ao Canvas!</h3>
+                        </div>
+                        <div class="modal-body">
+                        <h4>Desenhar no Canvas</h4>    
+                        <p>Antes de realizar operações sobre o Canvas ou sobre os objetos. Primeiro desenhe o póligono desejado.</p>
+                        <p>Escolha uma dentre as opções: &#9711; Circulo, &#9586; Linha, &#9651; Triângulo e &#9645; Retângulo.</p>
+                        <p>Lembrando que só é possível escolher apenas um representante de cada polígono para ser desenhado no Canvas.</p>
+                        <p>Após escolher, insira o ponto de criação:</p>
+                        <p>&#9711; Círculo: necessita do ponto do seu centro e o raio;</p>
+                        <p>&#9586; Linha: necessita de seus dois pontos;</p>
+                        <p>&#9651; Triângulo: necessita de seus três pontos;</p>
+                        <p>&#9645; Retângulo: necessita do ponto superior esquerdo e sua largura e altura.</p>
+                        <p>Aqui o plano do eixo Y está invertido, ou seja, quanto maior for a coordenado Y do objeto, mais pra baixo ele ficará.</p>
+                        <p>Há um visualizador de coordenadas que é sempre atualizado com as coordenados do cursor, logo ao lado do Canvas.</p>
+                        <p>O Canvas possui dimensões 700 x 500.</p>
+                        <div class="modal-footer"></div>
+
+                        <h4>Funções sobre o Canvas</h4>
+                        <p>Existem 6 funções principais que quando executadas agem sobre todo o plano e os objetos contidos nela.</p>
+                        <p><span class="glyphicon glyphicon glyphicon-move"></span> Translação: muda o eixo origem do canvas para o novo ponto atribuído.</p>
+                        <p><span class="glyphicon glyphicon glyphicon-repeat"></span> Rotação: rotaciona todos os objetos em volta da origem ou ponto escolhido. </p>
+                        <p><span class="glyphicon glyphicon glyphicon-resize-full"></span> Mudança de Escala: muda a escala do canvas tanto em X quanto em Y, os objetos sofrem as deformações provenientes, na origem ou ponto escolhido</p>
+                        <p><span class="glyphicon glyphicon glyphicon-erase"></span> Clear: reseta o Canvas para o seu estado original.</p>
+                        <p><span class="glyphicon glyphicon-fullscreen"></span> Zoom Extend: cria uma janela de visualização, adequa os objetos do Canvas de maneira proporcioanal e projeta no Canvas.</p>
+                        <p><span class="glyphicon glyphicon-zoom-in"></span> Zoom: Escolha um retângulo atráves de dois pontos onde será feito o zoom.</p>
+
+                        <p>Existem dois grupos de funções opcionais</p>
+                        <p><span class="glyphicon glyphicon-zoom-in"></span> Zoom específico e <span class="glyphicon glyphicon-th-large"></span> Espelhamento</p>
+                        <p><span class="glyphicon glyphicon-zoom-in"></span> Zoom In 2x: Faz uma mudança de escala de 2x o tamanho do Canvas.</p>
+                        <p><span class="glyphicon glyphicon-zoom-out"></span> Zoom Out 0.5 x: Faz uma mudança de escala de metade do tamanho do Canvas.</p>
+                        <p>Espelhamento X: Faz o espelhamento do eixo X do Canvas.</p>
+                        <p>Espelhamento Y: Faz o espelhamento do eixo Y do Canvas.</p>
+                        <p>Espelhamento X e Y: Faz o espelhamento do eixo X e Y do Canvas.</p>
+                        
+
+                        <div class="modal-footer"></div>
+                        <h4>Funções sobre os Polígonos</h4>
+                        <p>Existem 3 funções disponíveis para uso sobre os objetos selecionados</p>
+                        <p><span class="glyphicon glyphicon glyphicon-move"></span> Translação: faz com que o objeto selecionado para o novo ponto atribuído.</p>
+                        <p><span class="glyphicon glyphicon glyphicon-repeat"></span> Rotação: rotaciona o objeto. </p>
+                        <p><span class="glyphicon glyphicon glyphicon-resize-full"></span> Mudança de Escala: muda a escala do objeto tanto em X quanto em Y.</p>
+                        <p></p>
+                        <p></p>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+
+                <canvas id="myCanvas" width="700" height="500" style="border:1px solid #c3c3c3;"></canvas> 
+
+                <canvas id="myCanvas2" width="130" height="40" style="border:1px solid #c3c3c3;"></canvas> 
+
+        </div>
+
+
+        <div class="container">
+                <h3>Desenhos</h3>
+                <input type="button" class="btn btn-default btn-lg" value="&#9711; Circulo"  onclick="drawArc()">
+                <input type="button" class="btn btn-default btn-lg" value="&#9586; Linha" onclick="drawLine()">
+                <input type="button" class="btn btn-default btn-lg" value="&#9651; Triangulo" onclick="drawTri()">
+                <input type="button" class="btn btn-default btn-lg" value="&#9645; Retangulo" onclick="drawRect()"> 
+        </div>
+
+        <div class="container">
+                <h3>Funções Canvas</h3>
+                <button type="button" class="btn btn-default btn-lg" onclick="erase()"><span class="glyphicon glyphicon glyphicon-erase"></span> Clear</button>
+                <button type="button" class="btn btn-default btn-lg" onclick="transladar()"><span class="glyphicon glyphicon glyphicon-move"></span> Transladar</button>
+                <button type="button" class="btn btn-default btn-lg" onclick="rotate()"><span class="glyphicon glyphicon glyphicon-repeat"></span> Rotacionar</button>
+                <button type="button" class="btn btn-default btn-lg" onclick="escala()"><span class="glyphicon glyphicon-resize-full"></span> Escala</button>
+                <button type="button" class="btn btn-default btn-lg" onclick="zoomExtend2()"><span class="glyphicon glyphicon-fullscreen"></span> Zoom E</button>
+                <button type="button" class="btn btn-default btn-lg" onclick="zoom()"><span class="glyphicon glyphicon-zoom-in"></span> Zoom</button>
+
+                <p></p>
+
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="glyphicon glyphicon-zoom-in"></span> Zoom
+                    <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                      <li><a href="#" onclick="zoomIn()" type="button"><span class="glyphicon glyphicon-zoom-in"></span> Zoom in 2x</a></li>
+                      <li class="divider"></li>
+                      <li><a href="#" type="button" onclick="zoomOut()"><span class="glyphicon glyphicon-zoom-out"></span> Zoom out 0.5x</a></li>
+                    </ul>
+                  </div>
+
+                <p></p>
+
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="glyphicon glyphicon-th-large"></span> Espelhar
+                    <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                      <li><a href="#" onclick="espelharX()" type="button">Espelhar X</a></li>
+                      <li class="divider"></li>
+                      <li><a href="#" type="button" onclick="espelharY()">Espelhar Y</a></li>
+                      <li class="divider"></li>
+                      <li><a href="#" type="button" onclick="espelharAll()">Espelhar X Y</a></li>
+                    </ul>
+                  </div>
+
+
+        </div>
+
+        <div class="container">
+            <h3>Funções Polígonos</h3>
+
+            <div class="dropdown">
+              <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="glyphicon glyphicon glyphicon-move"></span> Transladar
+              <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li><a href="#" onclick="transArc()" type="button">&#9711; Círculo</a></li>
+                <li class="divider"></li>
+                <li><a href="#" type="button" onclick="transLine()">&#9586; Linha</a></li>
+                <li class="divider"></li>
+                <li><a href="#" type="button" onclick="transTri()">&#9651; Triângulo</a></li>
+                <li class="divider"></li>
+                <li><a href="#" type="button" onclick="transRect()">&#9645; Retângulo</a></li>
+              </ul>
+
+            </div>
+
+            <p></p>
+
+
+            <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="glyphicon glyphicon glyphicon-repeat"></span> Rotacionar
+                    <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                      <li><a href="#" onclick="rotateArc()" type="button">&#9711; Círculo</a></li>
+                      <li class="divider"></li>
+                      <li><a href="#" type="button" onclick="rotateLine()">&#9586; Linha</a></li>
+                      <li class="divider"></li>
+                      <li><a href="#" type="button" onclick="rotateTri()">&#9651; Triângulo</a></li>
+                      <li class="divider"></li>
+                      <li><a href="#" type="button" onclick="rotateRect()">&#9645; Retângulo</a></li>
+                    </ul>
+            </div>
+
+            <p></p>
+
+          <div class="dropdown"> 
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="glyphicon glyphicon glyphicon-resize-full"></span> Escala
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a href="#" onclick="escalaArc()" type="button">&#9711; Círculo</a></li>
+                  <li class="divider"></li>
+                  <li><a href="#" type="button" onclick="escalaLine()">&#9586; Linha</a></li>
+                  <li class="divider"></li>
+                  <li><a href="#" type="button" onclick="escalaTri()">&#9651; Triângulo</a></li>
+                  <li class="divider"></li>
+                  <li><a href="#" type="button" onclick="escalaRect()">&#9645; Retângulo</a></li>
+                </ul>
+              
+        </div>
+
+        <p></p>
+
+        <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#myModal2"><span class="glyphicon glyphicon glyphicon-info-sign"></span> Sobre</button></h1>
+
+                <div class="modal fade" id="myModal2" role="dialog">
+                    <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h3 class="modal-title">Sobre o trabalho Canvas!</h3>
+                        </div>
+                        <div class="modal-body">
+                        <h4>Desenvolvimento</h4>       
+                        <p>Aluno: Leonardo Carvalho da Silva</p>
+                        <p>RA 93852</p>
+                        <p>Disciplina de Computação Gráfica</p>
+                        <p>2018</p>
+                        
+                     
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+    </div>
+
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+
+
+  
+        
+        <script>
+
+            // Existência no Canvas
+            var arco = 0;
+            var triangulo = 0;
+            var retangulo = 0;
+            var linha = 0;
+
+            var retanguloRotacionado = 0;
+
+            // Relacionado ao Arco
+            var arcox = null;
+            var arcoy = null;
+            var arcoRaio = null;
+
+            var arcop1x = null;
+            var arcop1y = null;
+            var arcop2x = null;
+            var arcop2y = null;
+            var arcop3x = null;
+            var arcop3y = null;
+            var arcop4x = null;
+            var arcop4y = null;
+
+            // Retângulo para o Canvas
+            var retangulox = null;
+            var retanguloy = null;
+            var retanguloWidth = null;
+            var retanguloHeight = null;
+
+            var retangulop2x = null;
+            var retangulop2y = null;
+            var retangulop3x = null;
+            var retangulop3y = null;
+            var retangulop4x = null;
+            var retangulop4y = null;
+
+            var linhax = null;
+            var linhay = null;
+
+            var linhap2x = null;
+            var linhap2y = null;
+
+
+            var triangulox = null;
+            var trianguloy = null;
+
+            var triangulop2x = null;
+            var triangulop2y = null;
+            var triangulop3x = null;
+            var triangulop3y = null;
+
+            function writeMessage(canvas, message) {
+                var context = canvas.getContext('2d');
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                context.font = '15pt Comic Sans MS';
+                context.fillStyle = 'black';
+                context.fillText(message, 10, 25);
+            }
+            function getMousePos(canvas, evt) {
+                var rect = canvas.getBoundingClientRect();
+                return {
+                x: evt.clientX - rect.left,
+                y: evt.clientY - rect.top
+                };
+            }
+            var canvas = document.getElementById('myCanvas');
+            var context = canvas.getContext('2d');
+
+            var canvas2 = document.getElementById('myCanvas2');
+            var context = canvas.getContext('2d');
+
+            canvas.addEventListener('mousemove', function(evt) {
+
+                var mousePos = getMousePos(canvas, evt);
+                var message = parseInt(mousePos.x) + ', ' + parseInt(mousePos.y) + ' x y';
+                writeMessage(canvas2, message);
+            }, false);
+
+
+            function resetAll(){
+                 arco = 0;
+                 triangulo = 0;
+                 retangulo = 0;
+                 linha = 0;
+
+                 retanguloRotacionado == 0;
+
+                // Relacionado ao Arco
+                 arcox = null;
+                 arcoy = null;
+                 arcoRaio = null;
+
+                 arcop1x = null;
+                 arcop1y = null;
+                 arcop2x = null;
+                 arcop2y = null;
+                 arcop3x = null;
+                 arcop3y = null;
+                 arcop4x = null;
+                 arcop4y = null;
+
+                // Retângulo para o Canvas
+                 retangulox = null;
+                 retanguloy = null;
+                 retanguloWidth = null;
+                 retanguloHeight = null;
+
+                 retangulop2x = null;
+                 retangulop2y = null;
+                 retangulop3x = null;
+                 retangulop3y = null;
+                 retangulop4x = null;
+                 retangulop4y = null;
+
+                 linhax = null;
+                 linhay = null;
+
+                 linhap2x = null;
+                 linhap2y = null;
+
+                 triangulox = null;
+                 trianguloy = null;
+
+                 triangulop2x = null;
+                 triangulop2y = null;
+                 triangulop3x = null;
+                 triangulop3y = null;
+            }
+
+            function erase(){
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
+                ctx.clearRect(0, 0, 700, 500);
+
+                resetAll();
+
+                ctx.restore();
+            }
+
+            function back(){
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                ctx.restore();
+            }
+
+            function redrawAll(){
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                ctx.clearRect(-110, -110, 1400, 900);
+
+                if(arco == 1){
+                    ctx.beginPath();
+                    ctx.arc(arcox,arcoy,arcoRaio,0,5*Math.PI);
+                    ctx.strokeStyle='#000000';
+                    ctx.stroke();
+                }
+
+                if(retangulo == 1){
+                    ctx.beginPath();
+                    ctx.rect(retangulox,retanguloy,retanguloWidth,retanguloHeight); 
+                    ctx.strokeStyle='#000000';
+                    ctx.stroke();
+                }
+
+                if(linha == 1){
+                    ctx.beginPath();
+                    ctx.moveTo(linhax,linhay);
+                    ctx.lineTo(linhap2x,linhap2y);
+                    ctx.strokeStyle='#000000';
+                    ctx.stroke();
+                }
+
+                if(triangulo == 1){
+                    ctx.beginPath();
+                    ctx.moveTo(triangulox,trianguloy);
+                    ctx.lineTo(triangulop2x,triangulop2y);
+                    ctx.lineTo(triangulop3x, triangulop3y);
+                    ctx.closePath();
+                    ctx.strokeStyle='#000000';
+                    ctx.stroke();
+                }
+
+                if(retanguloRotacionado == 1){
+                    ctx.beginPath();
+                    ctx.moveTo(retangulox, retanguloy);
+                    ctx.lineTo(retangulop2x, retangulop2y);
+                    ctx.lineTo(retangulop4x, retangulop4y);
+                    ctx.lineTo(retangulop3x, retangulop3y);
+                    ctx.closePath();
+                    ctx.strokeStyle='#000000';
+                    ctx.stroke();
+                }
+
+            }
+
+            function selectAll(){
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                ctx.clearRect(0, 0, 700, 500);
+
+                if(arco == 1){
+                    ctx.beginPath();
+                    ctx.arc(arcox,arcoy,arcoRaio,0,5*Math.PI);
+                    ctx.strokeStyle='#ff0000';
+                    ctx.stroke();
+                }
+
+                if(retangulo == 1){
+                    ctx.beginPath();
+                    ctx.rect(retangulox,retanguloy,retanguloWidth,retanguloHeight); 
+                    ctx.strokeStyle='#ff0000';
+                    ctx.stroke();
+                }
+
+                if(linha == 1){
+                    ctx.beginPath();
+                    ctx.moveTo(linhax,linhay);
+                    ctx.lineTo(linhap2x,linhap2y);
+                    ctx.strokeStyle='#ff0000';
+                    ctx.stroke();
+                }
+
+                if(triangulo == 1){
+                    ctx.beginPath();
+                    ctx.moveTo(triangulox,trianguloy);
+                    ctx.lineTo(triangulop2x,triangulop2y);
+                    ctx.lineTo(triangulop3x, triangulop3y);
+                    ctx.closePath();
+                    ctx.strokeStyle='#ff0000';
+                    ctx.stroke();
+                }
+
+                if(retanguloRotacionado == 1){
+                    ctx.beginPath();
+                    ctx.moveTo(retangulox, retanguloy);
+                    ctx.lineTo(retangulop2x, retangulop2y);
+                    ctx.lineTo(retangulop4x, retangulop4y);
+                    ctx.lineTo(retangulop3x, retangulop3y);
+                    ctx.closePath();
+                    ctx.strokeStyle='#ff0000';
+                    ctx.stroke();
+                }
+
+            }
+
+            function drawLine(){
+
+                if(linha == 1){
+                    alert("Você só pode criar uma linha por vez!");
+                    return;
+                }
+
+                linhax = null;
+                linhay = null;
+                linhap2x = null;
+                linhap2y = null;
+
+                linhax = prompt("Entre com a coordenado X do primeiro ponto", "50");
+                linhay = prompt("Entre com a coordenado Y do primeiro ponto", "50");
+
+                linhap2x = prompt("Entre com a coodenado X do segundo ponto", "100");
+                linhap2y = prompt("Entre com a coordenado Y do segundo ponto", "150");
+
+                linhax = parseFloat(linhax);
+                linhay = parseFloat(linhay);
+
+                linhap2x = parseFloat(linhap2x);
+                linhap2y = parseFloat(linhap2y);
+
+                if(linhax == null || linhay == null || linhap2x == null || linhap2y ==null){
+                    alert("Insira valores corretamente!");
+                    return;
+                }
+
+                if(linhax < 0 || linhay < 0 || linhap2x <0 || linhap2y <0){
+                    alert("Insira valores não negativos para os pontos!");
+                    return;
+                }
+
+                var c=document.getElementById("myCanvas");
+                var ctx=c.getContext("2d");
+                ctx.beginPath();
+                ctx.moveTo(linhax,linhay);
+                ctx.lineTo(linhap2x,linhap2y);
+                ctx.stroke();
+
+                linha = 1;
+                
+            }
+
+            function drawRect(){
+
+                if(retangulo == 1 && retanguloRotacionado == 1){
+                    alert("Você só pode criar um retângulo por vez!");
+                    return;
+                }
+
+                retangulox = 45;
+                retanguloy = 45;
+                retanguloWidth = 40;
+                retanguloHeight = 40;
+
+                retangulox = prompt("Entre com a coordenada X do ponto superior esquerdo", "X");
+                retanguloy = prompt("Entre com a coordenada Y do ponto superior esquerdo:", "Y");
+                
+                retanguloWidth = prompt("Entre com a largura:", "Largura");
+                retanguloHeight = prompt("Entre com o altura:", "Altura");
+
+                retangulox = parseFloat(retangulox);
+                retanguloy = parseFloat(retanguloy);
+                
+                retanguloWidth = parseFloat(retanguloWidth);
+                retanguloHeight = parseFloat(retanguloHeight);
+
+                if(retangulox < 0 || retanguloy < 0 || retanguloWidth <=0 || retanguloHeight <=0){
+                    alert("Insira valores não negativos para o ponto!\nInsira valores positivos para a largura e altura!");
+                    return;
+                }
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                ctx.beginPath();
+                ctx.rect(retangulox,retanguloy,retanguloWidth,retanguloHeight); 
+                ctx.stroke();
+
+                retangulop2x = retangulox;
+                retangulop2y = retanguloy + retanguloHeight;
+
+                retangulop3x = retangulox + retanguloWidth;
+                retangulop3y = retanguloy;
+
+                retangulop4x = retangulox + retanguloWidth;
+                retangulop4y = retanguloy + retanguloHeight; 
+
+                retangulo = 1;
+            }
+
+            function drawTri(){
+                if(triangulo == 1){
+                    alert("Você só pode criar um triângulo por vez!");
+                    return;
+                }
+
+                triangulox = null;
+                trianguloy = null;
+                triangulop2x = null;
+                triangulop2y = null;
+                triangulop3x = null;
+                triangulop3y = null;
+
+
+                triangulox = prompt("Entre com a coordenado X do primeiro ponto", "50");
+                trianguloy = prompt("Entre com a coordenado Y do primeiro ponto", "50");
+
+                triangulop2x = prompt("Entre com a coodenado X do segundo ponto", "100");
+                triangulop2y = prompt("Entre com a coordenado Y do segundo ponto", "150");
+
+                triangulop3x = prompt("Entre com a coodenado X do terceiro ponto", "200");
+                triangulop3y = prompt("Entre com a coordenado Y do terceiro ponto", "250");
+
+                triangulox = parseFloat(triangulox);
+                trianguloy = parseFloat(trianguloy);
+
+                triangulop2x = parseFloat(triangulop2x);
+                triangulop2y = parseFloat(triangulop2y);
+
+                triangulop3x = parseFloat(triangulop3x);
+                triangulop3y = parseFloat(triangulop3y);
+
+                if(triangulox < 0 || trianguloy < 0 || triangulop2x <0 || triangulop2y <0 || triangulop3x <0 || triangulop3y <0){
+                    alert("Insira valores não negativos para os pontos!");
+                    return;
+                }
+
+                var c=document.getElementById("myCanvas");
+                var ctx=c.getContext("2d");
+                ctx.beginPath();
+                ctx.moveTo(triangulox,trianguloy);
+                ctx.lineTo(triangulop2x,triangulop2y);
+                ctx.lineTo(triangulop3x, triangulop3y);
+                ctx.closePath();
+                ctx.stroke();
+
+                triangulo = 1;
+            }
+
+            function drawArc(){
+
+                if(arco == 1){
+                    alert("Você só pode criar um arco por vez!");
+                    return;
+                }
+
+                arcox = prompt("Entre com a coordenada X", "45");
+                arcoy = prompt("Entre com a coordenada Y:", "40");
+                arcoRaio = prompt("Entre com o tamanho do raio:", "40");
+
+                arcox = parseFloat(arcox);
+                arcoy = parseFloat(arcoy);
+                arcoRaio = parseFloat(arcoRaio);
+
+                if(arcox < 0 || arcoy < 0 || arcoRaio <=0){
+                    alert("Insira valores não negativos para o ponto!\nInsira valores positivos para o Raio!");
+                    return;
+                }
+
+                arcop1x = arcox + arcoRaio;
+                arcop1y = arcoy;
+
+                arcop2x = arcox;
+                arcop2y = arcoy + arcoRaio;
+
+                arcop3x = arcox - arcoRaio;
+                arcop3y = arcoy;
+
+                arcop4x = arcox;
+                arcop4y = arcoy - arcoRaio;
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+                ctx.beginPath();
+                ctx.arc(arcox,arcoy,arcoRaio,0,5*Math.PI);
+                ctx.stroke();
+
+                arco = 1;
+            }
+
+            function escala(){
+
+                if(arco == 0 && triangulo == 0 && linha == 0 && retangulo == 0 && retanguloRotacionado==0){
+                    alert("Não há elementos no Canvas!");
+                    return;
+                }
+
+                selectAll();
+
+                var xScale = 1;
+                var yScale = 1;
+
+                var pontox;
+                var pontoy;
+
+                pontox = prompt("Entre com a coordenada do X do ponto referencial","20");
+                pontoy = prompt("Entre com a coordenada do Y do ponto referencial","20");
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                xScale = prompt("Entre com a mudança de escala em X", "1");
+                yScale = prompt("Entre com a mudança de escala em Y:", "1");
+
+                xScale = parseFloat(xScale);
+                yScale = parseFloat(yScale);
+
+                if(xScale < 0 || yScale < 0){
+                    alert("Mudanças de Escala são possíveis somente com números positivos!\nPara diminuir a escala do objeto utilize valores entre 0 e 1!");
+                    redrawAll();
+                    return;
+                }
+
+                ctx.translate(pontox,pontoy);
+
+                ctx.scale(xScale,yScale);
+
+                ctx.clearRect(0, 0, 700, 500);
+
+                redrawAll();
+
+                ctx.translate(-pontox, -pontoy);
+
+                redrawAll();
+            }
+
+            function transladar(){
+                
+                if(arco == 0 && triangulo == 0 && linha == 0 && retangulo == 0 && retanguloRotacionado == 0){
+                    alert("Não há elementos no Canvas!");
+                    return;
+                }
+
+                selectAll();
+
+                var xTrans = 0;
+                var yTrans = 0;
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+                xTrans = prompt("Defina a coordenada X da nova origem do plano Canvas:", "X");
+                yTrans = prompt("Defina a coordenada Y da nova origem do plano Canvas:", "Y");
+
+                xTrans = parseFloat(xTrans);
+                yTrans = parseFloat(yTrans);
+
+                ctx.clearRect(0, 0, 700, 500);
+
+                ctx.translate(xTrans,yTrans);
+
+                redrawAll();
+
+            }
+
+            function rotate(){
+
+                 if(arco == 0 && triangulo == 0 && linha == 0 && retangulo == 0 && retanguloRotacionado == 0){
+                    alert("Não há elementos no Canvas!");
+                    return;
+                }
+
+                selectAll();
+
+                var angulo = 0;
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                var pontox;
+                var pontoy;
+
+                pontox = prompt("Entre com a coordenada do X do ponto referencial","20");
+                pontoy = prompt("Entre com a coordenada do Y do ponto referencial","20");
+
+                angulo = prompt("Defina o ângulo de rotação:\n(Com base na regra da mão direita, ângulo positivo girar para a direita, ângulo negativo girar para a esquerda)", "ângulo");
+
+                angulo = parseFloat(angulo);
+
+                ctx.clearRect(0, 0, 700, 500);
+
+                ctx.translate(pontox,pontoy);
+
+                ctx.rotate((Math.PI / 180) * angulo);
+
+                ctx.translate(-pontox,-pontoy);
+
+                redrawAll();
+
+            }
+
+            function zoomExtend(){
+
+                if(arco == 0 && triangulo == 0 && linha == 0 && retangulo == 0 && retanguloRotacionado == 0){
+                    alert("Não há elementos no Canvas!");
+                    return;
+                }
+
+                var uMax; var uMin;
+                var vMax; var vMin;
+
+                vMax = Math.max(linhay, linhap2y, retangulop4y, trianguloy, triangulop2y, triangulop3y,arcop2y);
+                uMax = Math.max(linhax, linhap2x, retangulop3x, triangulox, triangulop2x, triangulop3x,arcop1x);
+
+                vMin = vMax;
+                uMin = uMax;
+
+
+                if(triangulo == 1){
+                    vMin = Math.min(vMin, trianguloy, triangulop2y, triangulop3y);
+                    uMin = Math.min(uMin, triangulox, triangulop2x, triangulop3x);
+
+                }
+
+                if(arco == 1){
+                    vMin = Math.min(vMin, arcop4y);
+                    uMin = Math.min(uMin, arcop3x);
+
+                    console.log(arcop4y);
+
+                }
+
+                if(linha == 1){
+                    vMin = Math.min(vMin, linhay, linhap2y);
+                    uMin = Math.min(uMin, linhax, linhap2x);
+
+                }
+
+                if(retangulo == 1){
+                    vMin = Math.min(vMin, retanguloy);
+                    uMin = Math.min(uMin, retangulox); 
+                }
+
+
+                //vMin = Math.min(linhay, linhap2y, retanguloy, trianguloy, triangulop2y, triangulop3y);
+                //uMin = Math.min(linhax, linhap2x, retangulox, triangulox, triangulop2x, triangulop3x);
+
+                var aspectRatioViewport = (uMax - uMin) / (vMax - vMin);
+
+                if(aspectRatioViewport < 1.4){
+                    vMax = (((uMax - uMin) + ((1.4) * (vMin))) / 1.4)
+                }
+                
+                else {
+                    uMax = ((1.4) * (vMax - vMin)) + uMin;
+                }
+
+                var Sx = (uMax - uMin) / 700;
+                var Sy = (vMax - vMin) / 500;
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                console.log(Sx);
+                console.log(Sy);
+
+
+                alert(" vMax " + vMax + " vMin " + vMin + " uMax " + uMax + " uMin " + uMin + "\naspect ratio " + aspectRatioViewport);
+
+                ctx.clearRect(0, 0, 700, 500);
+
+
+
+                ctx.scale(Sx,Sy);
+                
+                ctx.translate(uMin,vMin);
+
+                redrawAll();
+                 
+            }
+
+             function zoomExtend2(){
+
+                if(arco == 0 && triangulo == 0 && linha == 0 && retangulo == 0 && retanguloRotacionado == 0){
+                    alert("Não há elementos no Canvas!");
+                    return;
+                }
+
+                var uMax; var uMin;
+                var vMax; var vMin;
+
+                var xMax; var xMin;
+                var yMax; var yMin;
+
+                yMax = Math.max(linhay, linhap2y, retangulop4y, trianguloy, triangulop2y, triangulop3y,arcop2y,retangulop2y,retangulop3y,retangulop4y);
+                xMax = Math.max(linhax, linhap2x, retangulop3x, triangulox, triangulop2x, triangulop3x,arcop1x,retangulop2x,retangulop3x,retangulop4x);
+
+                yMin = yMax;
+                xMin = xMax;
+
+
+                if(triangulo == 1){
+                    yMin = Math.min(yMin, trianguloy, triangulop2y, triangulop3y);
+                    xMin = Math.min(xMin, triangulox, triangulop2x, triangulop3x);
+
+                }
+
+                if(arco == 1){
+                    yMin = Math.min(yMin, arcop4y);
+                    xMin = Math.min(xMin, arcop3x);
+
+                }
+
+                if(linha == 1){
+                    yMin = Math.min(yMin, linhay, linhap2y);
+                    xMin = Math.min(xMin, linhax, linhap2x);
+
+                }
+
+                if(retangulo == 1){
+                    yMin = Math.min(yMin, retanguloy);
+                    xMin = Math.min(xMin, retangulox); 
+                }
+
+                if(retanguloRotacionado == 1){
+                    yMin = Math.min(yMin,retangulop2y,retangulop3y,retangulop4y,retanguloy);
+                    xMin = Math.min(xMin,retangulop2x,retangulop3x,retangulop4x,retangulox)
+                }
+
+                var aspectRatioWindow = (xMax - xMin) / (yMax - xMin);
+
+                uMax = 700;
+                uMin = 0;
+                vMax = 500;
+                vMin = 0;
+
+                var aspectRatioViewport = 1.4;
+
+                vMax = parseInt(vMax);
+                uMax = parseInt(uMax);
+
+                var vAntigo = vMax;
+                var uAntigo = uMax;
+
+                if(aspectRatioViewport < aspectRatioWindow){
+                    vMax = ((uMax - uMin) / aspectRatioWindow) + vMin ;
+                }
+
+                else {
+                    uMax = ((aspectRatioWindow) * (vMax - vMin)) + uMin;
+                }
+
+                var Sx = (uMax - uMin) / (xMax - xMin);
+                var Sy = (vMax - vMin) / (yMax - yMin);
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+               // console.log(Sx);
+                //console.log(Sy);
+
+                console.log(" vMax " + vMax + " vMin " + vMin + " uMax " + uMax + " uMin " + uMin + "\naspect ratio " + aspectRatioViewport);
+                console.log(" yMax " + yMax + " yMin " + yMin + " xMax " + xMax + " xMin " + xMin + "\naspect ratio " + aspectRatioWindow);
+
+                ctx.clearRect(0, 0, 700, 500);
+
+                //ctx.translate(-xMin, -yMin);
+
+                ctx.translate( - ((uMax - uAntigo)/2), - ((vMax - vAntigo)/2));
+
+                ctx.scale(Sx,Sy);
+
+                ctx.translate(-xMin, -yMin);
+
+                //ctx.translate((xMin), (yMin));
+
+                //ctx.translate(0, 0);
+
+                //ctx.translate( ((- ((uMax - uAntigo)/2) /  Sx)), ( - ((vMax - vAntigo)/2)) / Sy);
+
+                //ctx.translate (((uMax - uAntigo)/2) /  Sx , ((vMax - vAntigo)/2) / Sy);
+
+                //console.log("Diferença u: "+ (uMax - uAntigo) + " Diferença v: " + (vMax - vAntigo))
+            
+                //ctx.translate(uMax - uAntigo,vMax - vAntigo);
+
+                //ctx.translate((-xMin), (-yMin));
+
+               // ctx.translate(((Sx*xMin) - xMin),((Sy*yMin) - yMin));
+
+                ctx.translate(0, 0);
+
+                redrawAll();
+                
+            }
+
+            function zoom(){
+                if(arco == 0 && triangulo == 0 && linha == 0 && retangulo == 0 && retanguloRotacionado == 0){
+                    alert("Não há elementos no Canvas!");
+                    return;
+                }
+
+                var uMax; var uMin;
+                var vMax; var vMin;
+
+                var xMax; var xMin;
+                var yMax; var yMin;
+
+                xMin = prompt("Defina a coordenada X do ponto superior esquerdo","0");
+                yMin = prompt("Defina a coordenada Y do ponto superior esquerdo","0");
+
+                xMax = prompt("Defina a coordenada X do ponto inferior direito","50");
+                yMax = prompt("Defina a coordenada Y do ponto inferior direito","50");
+
+                xMin = parseFloat(xMin);
+                xMax = parseFloat(xMax);
+
+                yMin = parseFloat(yMin);
+                yMax = parseFloat(yMax);
+
+                if(xMin >= xMax || yMin >= yMax){
+                    alert("Coordenadas para Zoom inválidas!");
+                    return;
+                }
+
+                var aspectRatioWindow = (xMax - xMin) / (yMax - xMin);
+
+                uMax = 700;
+                uMin = 0;
+                vMax = 500;
+                vMin = 0;
+
+                var aspectRatioViewport = 1.4;
+
+                var vAntigo = vMax;
+                var uAntigo = uMax;
+
+                if(aspectRatioViewport < aspectRatioWindow){
+                    vMax = ((uMax - uMin) / aspectRatioWindow) + vMin ;
+                }
+
+                else {
+                    uMax = ((aspectRatioWindow) * (vMax - vMin)) + uMin;
+                }
+
+                var Sx = (uMax - uMin) / (xMax - xMin);
+                var Sy = (vMax - vMin) / (yMax - yMin);
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                //console.log(Sx);
+                //console.log(Sy);
+
+                console.log(" vMax " + vMax + " vMin " + vMin + " uMax " + uMax + " uMin " + uMin + "\naspect ratio " + aspectRatioViewport);
+                console.log(" yMax " + yMax + " yMin " + yMin + " xMax " + xMax + " xMin " + xMin + "\naspect ratio " + aspectRatioWindow);
+
+                ctx.clearRect(0, 0, 700, 500);
+
+                //ctx.translate( - ((uMax - uAntigo)/2), - ((vMax - vAntigo)/2));
+
+                ctx.scale(Sx,Sy);
+
+                ctx.translate(-xMin, -yMin);
+
+                ctx.translate(0, 0);
+
+                redrawAll();
+                                
+            }
+
+            function zoomOut(){
+
+                if(arco == 0 && triangulo == 0 && linha == 0 && retangulo == 0 && retanguloRotacionado==0){
+                    alert("Não há elementos no Canvas!");
+                    return;
+                }
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                ctx.scale(0.5,0.5);
+
+                ctx.clearRect(0, 0, 1400, 800);
+
+                redrawAll();
+            }
+
+             function zoomIn(){
+
+                if(arco == 0 && triangulo == 0 && linha == 0 && retangulo == 0 && retanguloRotacionado==0){
+                    alert("Não há elementos no Canvas!");
+                    return;
+                }
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                ctx.scale(2,2);
+
+                ctx.clearRect(0, 0, 1400, 800);
+
+                redrawAll();
+            }
+
+            function espelharX(){
+
+                if(arco == 0 && triangulo == 0 && linha == 0 && retangulo == 0 && retanguloRotacionado==0){
+                    alert("Não há elementos no Canvas!");
+                    return;
+                }
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                ctx.scale(-1,1);
+
+                ctx.clearRect(0, 0, 1400, 800);
+
+                ctx.translate(-700, 0);
+
+                redrawAll();
+
+            }
+
+            function espelharY(){
+
+                if(arco == 0 && triangulo == 0 && linha == 0 && retangulo == 0 && retanguloRotacionado==0){
+                    alert("Não há elementos no Canvas!");
+                    return;
+                }
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                ctx.scale(1,-1);
+
+                ctx.clearRect(0, 0, 1400, 800);
+
+                ctx.translate(0, -500);
+
+                redrawAll();
+
+            }
+
+            function espelharAll(){
+
+                if(arco == 0 && triangulo == 0 && linha == 0 && retangulo == 0 && retanguloRotacionado==0){
+                    alert("Não há elementos no Canvas!");
+                    return;
+                }
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                ctx.scale(-1,-1);
+
+                ctx.clearRect(0, 0, 1400, 800);
+
+                ctx.translate(-700, -500);
+
+                redrawAll();
+
+            }
+
+            function transRect(){
+
+                if(retangulo == 0 && retanguloRotacionado == 0){
+                    alert("É necessário desenhar o retângulo primeiro!");
+                    return;
+                }
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                if(retangulo == 1){
+                    ctx.beginPath();
+                    ctx.rect(retangulox,retanguloy,retanguloWidth,retanguloHeight); 
+                    ctx.strokeStyle = '#ff0000';
+                    ctx.stroke();
+                }
+
+                if(retanguloRotacionado == 1){
+                    ctx.beginPath();
+                    ctx.moveTo(retangulox, retanguloy);
+                    ctx.lineTo(retangulop2x, retangulop2y);
+                    ctx.lineTo(retangulop4x, retangulop4y);
+                    ctx.lineTo(retangulop3x, retangulop3y);
+                    ctx.closePath();
+                    ctx.strokeStyle='#ff0000';
+                    ctx.stroke();
+                }
+
+                var dx = prompt("Escreva o deslocamento em x","0");
+                var dy = prompt("Escreva o deslocamento em y","0");
+
+                dx = parseFloat(dx);
+                dy = parseFloat(dy);
+
+                retangulox = retangulox + dx;
+                retanguloy = retanguloy + dy;
+
+                retangulop2x = retangulop2x + dx;
+                retangulop2y = retangulop2y + dy;
+
+                retangulop3x = retangulop3x + dx;
+                retangulop3y = retangulop3y + dy;
+
+                retangulop4x = retangulop4x + dx;
+                retangulop4y = retangulop4x + dy;
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                ctx.clearRect(0, 0, 700, 500);
+
+                redrawAll();
+
+            }
+
+            function transTri(){
+
+                if(triangulo == 0){
+                    alert("É necessário desenhar o triângulo primeiro!");
+                    return;
+                }
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                ctx.beginPath();
+                ctx.moveTo(triangulox,trianguloy);
+                ctx.lineTo(triangulop2x,triangulop2y);
+                ctx.lineTo(triangulop3x, triangulop3y);
+                ctx.closePath();
+                ctx.strokeStyle='#ff0000';
+                ctx.stroke();
+
+                var dx = prompt("Escreva o deslocamento em x","0");
+                var dy = prompt("Escreva o deslocamento em y","0");
+
+                dx = parseFloat(dx);
+                dy = parseFloat(dy);
+
+                triangulox = triangulox + dx;
+                trianguloy = trianguloy + dy;
+
+                triangulop2x = triangulop2x + dx;
+                triangulop2y = triangulop2y + dy;
+
+                triangulop3x = triangulop3x + dx;
+                triangulop3y = triangulop3y + dy;
+
+                redrawAll();
+            }
+
+            function transArc(){
+                if(arco == 0){
+                    alert("É necessário desenhar o círculo primeiro!");
+                    return;
+                }
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                ctx.beginPath();
+                ctx.arc(arcox,arcoy,arcoRaio,0,5*Math.PI);
+                ctx.strokeStyle='#ff0000';
+                ctx.stroke();
+
+                var dx = prompt("Escreva o deslocamento em x","50");
+                var dy = prompt("Escreva o deslocamento em y","50");
+
+                dx = parseFloat(dx);
+                dy = parseFloat(dy);
+
+                arcox = arcox + dx;
+                arcoy = arcoy + dy;
+
+                redrawAll();
+            }
+            
+            function transLine(){
+                if(linha == 0){
+                    alert("É necessário desenhar a linha primeiro!");
+                    return;
+                }
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                ctx.beginPath();
+                ctx.moveTo(linhax,linhay);
+                ctx.lineTo(linhap2x,linhap2y);
+                ctx.strokeStyle='#ff0000';
+                ctx.stroke();
+
+                var dx = prompt("Escreva o deslocamento em x","50");
+                var dy = prompt("Escreva o deslocamento em y","50");
+
+                dx = parseFloat(dx);
+                dy = parseFloat(dy);
+
+                linhax = linhax + dx;
+                linhay = linhay + dy;
+
+                linhap2x = linhap2x + dx;
+                linhap2y = linhap2y + dy;
+
+                redrawAll();
+            }
+  
+            function escalaRect(){
+
+                if(retangulo == 0 && retanguloRotacionado == 0){
+                    alert("É necessário desenhar o retângulo primeiro!");
+                    return;
+                }
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                if(retangulo == 1){
+                    ctx.beginPath();
+                    ctx.rect(retangulox,retanguloy,retanguloWidth,retanguloHeight); 
+                    ctx.strokeStyle = '#ff0000';
+                    ctx.stroke();
+                }
+
+                if(retanguloRotacionado == 1){
+                    ctx.beginPath();
+                    ctx.moveTo(retangulox, retanguloy);
+                    ctx.lineTo(retangulop2x, retangulop2y);
+                    ctx.lineTo(retangulop4x, retangulop4y);
+                    ctx.lineTo(retangulop3x, retangulop3y);
+                    ctx.closePath();
+                    ctx.strokeStyle='#ff0000';
+                    ctx.stroke();
+                }
+
+                var Sx = prompt("Escreva a mudança de escala em x","50");
+                var Sy = prompt("Escreva a mudança de escala em y","50");
+
+                Sx = parseFloat(Sx);
+                Sy = parseFloat(Sy);
+
+                if(Sx <= 0 || Sy <= 0){
+                    alert("Defina valores positivos para a mudança de escala!");
+                    redrawAll();
+                    return;
+                }
+
+                retangulox = retangulox * Sx;
+                retanguloy = retanguloy * Sy;
+
+                retanguloWidth = retanguloWidth * Sx;
+                retanguloHeight = retanguloHeight * Sy;
+
+                retangulop2x = retangulop2x * Sx;
+                retangulop2y = retangulop2y * Sy;
+
+                retangulop3x = retangulop3x * Sx;
+                retangulop3y = retangulop3y * Sy;
+
+                retangulop4x = retangulop4x * Sx;
+                retangulop4y = retangulop4y * Sy;
+
+                redrawAll();
+
+            }
+
+            function escalaArc(){
+                if(arco == 0){
+                    alert("É necessário desenhar o círculo primeiro!");
+                    return;
+                }
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                ctx.beginPath();
+                ctx.arc(arcox,arcoy,arcoRaio,0,5*Math.PI);
+                ctx.strokeStyle='#ff0000';
+                ctx.stroke();
+
+                var Sx = prompt("Escreva a mudança de escala linear","50");
+                var Sy;
+
+                Sx = parseFloat(Sx);
+                Sy = Sx;
+
+                if(Sx <= 0 || Sy <= 0){
+                    alert("Defina valores positivos para a mudança de escala!");
+                    redrawAll();
+                    return;
+                }
+
+                arcox = arcox * Sx;
+                arcoy = arcoy * Sy;
+
+                arcoRaio = arcoRaio * Sx;
+
+                arcop1x = arcop1x * Sx;
+                arcop1y = arcop1y * Sy;
+
+                arcop2x = arcop2x * Sx;
+                arcop2y = arcop2y * Sy;
+
+                arcop3x = arcop3x * Sx;
+                arcop3y = arcop3y * Sy;
+
+                arcop4x = arcop4x * Sx;
+                arcop4y = arcop4y * Sy;
+
+                redrawAll();
+            }
+
+            function escalaTri(){
+
+                if(triangulo == 0){
+                    alert("É necessário desenhar o triângulo primeiro!");
+                    return;
+                }
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                ctx.beginPath();
+                ctx.moveTo(triangulox,trianguloy);
+                ctx.lineTo(triangulop2x,triangulop2y);
+                ctx.lineTo(triangulop3x, triangulop3y);
+                ctx.closePath();
+                ctx.strokeStyle='#ff0000';
+                ctx.stroke();
+
+                var Sx = prompt("Escreva a mudança de escala em x","50");
+                var Sy = prompt("Escreva a mudança de escala em y","50");
+
+                Sx = parseFloat(Sx);
+                Sy = parseFloat(Sy);
+
+                if(Sx <= 0 || Sy <= 0){
+                    alert("Defina valores positivos para a mudança de escala!");
+                    redrawAll();
+                    return;
+                }
+
+                triangulox = triangulox * Sx;
+                trianguloy = trianguloy * Sy;
+
+                triangulop2x = triangulop2x * Sx;
+                triangulop2y = triangulop2y * Sy;
+
+                triangulop3x = triangulop3x * Sx;
+                triangulop3y = triangulop3y * Sy;
+
+                console.log(triangulox);
+                console.log(trianguloy);
+
+                console.log(triangulop2x);
+                console.log(triangulop2y);
+
+                console.log(triangulop3x);
+                console.log(triangulop3y);
+
+                redrawAll();
+            }
+
+            function escalaLine(){
+
+                if(linha == 0){
+                    alert("É necessário desenhar a reta primeiro!");
+                    return;
+                }
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                ctx.beginPath();
+                ctx.moveTo(linhax,linhay);
+                ctx.lineTo(linhap2x,linhap2y);
+                ctx.strokeStyle='#ff0000';
+                ctx.stroke();
+
+                var Sx = prompt("Escreva a mudança de escala em x","50");
+                var Sy = prompt("Escreva a mudança de escala em y","50");
+
+                Sx = parseFloat(Sx);
+                Sy = parseFloat(Sy);
+
+                if(Sx <= 0 || Sy <= 0){
+                    alert("Defina valores positivos para a mudança de escala!");
+                    redrawAll();
+                    return;
+                }
+
+                linhax = linhax * Sx;
+                linhay = linhay * Sy;
+
+                linhap2x = linhap2x * Sx;
+                linhap2y = linhap2y * Sy;
+
+                redrawAll();
+            }
+
+            function rotateRect(){
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                if(retangulo == 0 && retanguloRotacionado == 0){
+                    alert("É necessário desenhar o retângulo primeiro!");
+                    return;
+                }
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                if(retangulo == 1){
+                    ctx.beginPath();
+                    ctx.rect(retangulox,retanguloy,retanguloWidth,retanguloHeight); 
+                    ctx.strokeStyle = '#ff0000';
+                    ctx.stroke();
+                }
+
+                if(retanguloRotacionado == 1){
+                    ctx.beginPath();
+                    ctx.moveTo(retangulox, retanguloy);
+                    ctx.lineTo(retangulop2x, retangulop2y);
+                    ctx.lineTo(retangulop4x, retangulop4y);
+                    ctx.lineTo(retangulop3x, retangulop3y);
+                    ctx.closePath();
+                    ctx.strokeStyle='#ff0000';
+                    ctx.stroke();
+                }
+
+                retangulo = 0;
+                retanguloRotacionado = 1;
+
+                var dx;
+                var dy;
+
+                var pontox;
+                var pontoy;
+
+                //pontox = prompt("Escreva coordenado X do ponto de rotação","0");
+                //pontoy = prompt("Escreva coordenado Y do ponto de rotação","0");
+
+                var angulo = prompt("Escreva o angulo de rotação\n(Com base na regra da mão direita, ângulo positivo girar para a direita, ângulo negativo girar para a esquerda)","50");
+
+                angulo = parseFloat(angulo);
+
+                angulo = angulo * Math.PI / 180 ;
+
+                dx = - retangulox;
+                dx = - retanguloy;
+
+               // retangulox = retangulox + dx;
+                //retanguloy = retanguloy + dy;
+
+                //retangulop2x = retangulop2x + dx;
+                //retangulop2y = retangulop2y + dy;
+
+               // retangulop3x = retangulop3x + dx;
+                //retangulop3y = retangulop3y + dy;
+
+                //retangulop4x = retangulop4x + dx;
+               // retangulop4y = retangulop4x + dy;
+
+                retangulox = ((retangulox * Math.cos(angulo)) - (retanguloy * Math.sin(angulo)));
+                retanguloy = ((Math.sin(angulo) * retangulox) + (Math.cos(angulo) * retanguloy));
+
+                retangulop2x = ((retangulop2x * Math.cos(angulo)) - (retangulop2y * Math.sin(angulo)));
+                retangulop2y = ((Math.sin(angulo) * retangulop2x) + (Math.cos(angulo) * retangulop2y));
+
+                retangulop3x = ((retangulop3x * Math.cos(angulo)) - (retangulop3y * Math.sin(angulo)));
+                retangulop3y = ((Math.sin(angulo) * retangulop3x) + (Math.cos(angulo) * retangulop3y));
+
+                retangulop4x = ((retangulop4x * Math.cos(angulo)) - (retangulop4y * Math.sin(angulo)));
+                retangulop4y = ((Math.sin(angulo) * retangulop4x) + (Math.cos(angulo) * retangulop4y));
+
+               // dx = pontox;
+               // dy = pontoy;
+
+               // retangulox = retangulox + dx;
+               // retanguloy = retanguloy + dy;
+
+              //  retangulop2x = retangulop2x + dx;
+               // retangulop2y = retangulop2y + dy;
+
+               // retangulop3x = retangulop3x + dx;
+               // retangulop3y = retangulop3y + dy;
+
+               // retangulop4x = retangulop4x + dx;
+               //retangulop4y = retangulop4x + dy;
+
+                redrawAll();
+
+            }
+
+            function rotateArc(){
+
+                if(arco == 0){
+                    alert("É necessário desenhar o círculo primeiro!");
+                    return;
+                }
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                ctx.beginPath();
+                ctx.arc(arcox,arcoy,arcoRaio,0,5*Math.PI);
+                ctx.strokeStyle='#ff0000';
+                ctx.stroke();
+
+                var angulo = prompt("Escreva o angulo de rotação\n(Com base na regra da mão direita, ângulo positivo girar para a direita, ângulo negativo girar para a esquerda)","50");
+
+                angulo = parseFloat(angulo);
+
+                angulo = angulo * Math.PI / 180 ;
+
+                arcox = ((arcox * Math.cos(angulo)) - (arcoy * Math.sin(angulo)));
+                arcoy = ((Math.sin(angulo) * arcox) + (Math.cos(angulo) * arcoy));
+
+                redrawAll();
+
+            }
+
+            function rotateLine(){
+
+                if(linha == 0){
+                    alert("É necessário desenhar a reta primeiro!");
+                    return;
+                }
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                ctx.beginPath();
+                ctx.moveTo(linhax,linhay);
+                ctx.lineTo(linhap2x,linhap2y);
+                ctx.strokeStyle='#ff0000';
+                ctx.stroke();
+
+                var angulo = prompt("Escreva o angulo de rotação em graus\n(Com base na regra da mão direita, ângulo positivo girar para a direita, ângulo negativo girar para a esquerda)","50");
+
+                angulo = parseFloat(angulo);
+
+                angulo = angulo * Math.PI / 180 ;
+
+                console.log(angulo);
+
+                var seno = Math.sin(angulo);
+                var cos = Math.cos(angulo);
+
+                console.log(seno);
+                console.log(cos);
+
+                linhax = ((linhax * cos) - (linhay * seno));
+                linhay = ((seno * linhax) + (cos * linhay));
+
+                linhap2x = ((linhap2x * cos) - (linhap2y * seno));
+                linhap2y = ((seno * linhap2x) + (cos * linhap2y));
+
+                console.log(linhax);
+                console.log(linhay);
+
+                console.log(linhap2x);
+                console.log(linhap2y);
+
+                redrawAll();
+
+            }
+
+            function rotateTri(){
+                
+                if(triangulo == 0){
+                    alert("É necessário desenhar o triângulo primeiro!");
+                    return;
+                }
+
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+
+                ctx.beginPath();
+                ctx.moveTo(triangulox,trianguloy);
+                ctx.lineTo(triangulop2x,triangulop2y);
+                ctx.lineTo(triangulop3x, triangulop3y);
+                ctx.closePath();
+                ctx.strokeStyle='#ff0000';
+                ctx.stroke();
+
+                var angulo = prompt("Escreva o angulo de rotação\n(Com base na regra da mão direita, ângulo positivo girar para a direita, ângulo negativo girar para a esquerda)","50");
+
+                angulo = parseFloat(angulo);
+
+                angulo = angulo * Math.PI / 180 ;
+
+                triangulox = ((triangulox * Math.cos(angulo)) - (trianguloy * Math.sin(angulo)));
+                trianguloy = ((Math.sin(angulo) * triangulox) + (Math.cos(angulo) * trianguloy));
+
+                triangulop2x = ((triangulop2x * Math.cos(angulo)) - (triangulop2y * Math.sin(angulo)));
+                triangulop2y = ((Math.sin(angulo) * triangulop2x) + (Math.cos(angulo) * triangulop2y));
+
+                triangulop3x = ((triangulop2x * Math.cos(angulo)) - (triangulop3y * Math.sin(angulo)));
+                triangulop3y = ((Math.sin(angulo) * triangulop3x) + (Math.cos(angulo) * triangulop3y));
+
+                redrawAll();
+            }
+
+
+        </script>
+
+    </body>
+</html>
